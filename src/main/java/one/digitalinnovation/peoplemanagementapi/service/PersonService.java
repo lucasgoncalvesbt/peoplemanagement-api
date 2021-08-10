@@ -2,6 +2,7 @@ package one.digitalinnovation.peoplemanagementapi.service;
 
 import one.digitalinnovation.peoplemanagementapi.dto.MessageResponseDTO;
 import one.digitalinnovation.peoplemanagementapi.dto.PersonDTO;
+import one.digitalinnovation.peoplemanagementapi.exception.PersonNotFoundException;
 import one.digitalinnovation.peoplemanagementapi.mapper.PersonMapper;
 import one.digitalinnovation.peoplemanagementapi.model.Person;
 import one.digitalinnovation.peoplemanagementapi.repository.PersonRepository;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,6 +33,7 @@ public class PersonService {
                 .collect(Collectors.toList());
     }
 
+
     public MessageResponseDTO createPerson(PersonDTO personDTO) {
         Person personToSave = personMapper.toModel(personDTO);
 
@@ -40,5 +43,14 @@ public class PersonService {
                 .builder()
                 .message("Created person with id: " + savedPerson.getId())
                 .build();
+    }
+
+    public PersonDTO findById(Long id) throws PersonNotFoundException {
+        Person person = personRepository.findById(id).orElseThrow(() -> new PersonNotFoundException(id));
+        //Optional<Person> optionalPerson = personRepository.findById(id);
+        //if (optionalPerson.isEmpty()) {
+        //    throw new PersonNotFoundException(id);
+        //}
+        return personMapper.toDto(person);
     }
 }
