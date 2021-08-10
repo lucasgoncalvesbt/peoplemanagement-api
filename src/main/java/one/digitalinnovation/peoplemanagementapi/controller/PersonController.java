@@ -7,6 +7,7 @@ import one.digitalinnovation.peoplemanagementapi.exception.PersonNotFoundExcepti
 import one.digitalinnovation.peoplemanagementapi.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,13 +21,13 @@ public class PersonController {
     private PersonService personService;
 
     @GetMapping
-    public List<PersonDTO> listAll() {
-        return personService.listAll();
+    public ResponseEntity<List<PersonDTO>> listAll() {
+        return ResponseEntity.ok(personService.listAll());
     }
 
     @GetMapping("/{id}")
-    public PersonDTO findById(@PathVariable Long id) throws PersonNotFoundException {
-        return personService.findById(id);
+    public ResponseEntity<PersonDTO> findById(@PathVariable Long id) throws PersonNotFoundException {
+        return ResponseEntity.ok(personService.findById(id));
     }
 
     @PostMapping
@@ -41,8 +42,8 @@ public class PersonController {
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteById(@PathVariable Long id) throws PersonNotFoundException {
+    public ResponseEntity<?> deleteById(@PathVariable Long id) throws PersonNotFoundException {
         personService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }
