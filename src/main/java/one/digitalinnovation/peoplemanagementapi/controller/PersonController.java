@@ -1,5 +1,6 @@
 package one.digitalinnovation.peoplemanagementapi.controller;
 
+import lombok.AllArgsConstructor;
 import one.digitalinnovation.peoplemanagementapi.dto.MessageResponseDTO;
 import one.digitalinnovation.peoplemanagementapi.dto.PersonDTO;
 import one.digitalinnovation.peoplemanagementapi.exception.PersonNotFoundException;
@@ -13,9 +14,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/people")
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class PersonController {
 
-    @Autowired
     private PersonService personService;
 
     @GetMapping

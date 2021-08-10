@@ -1,5 +1,6 @@
 package one.digitalinnovation.peoplemanagementapi.service;
 
+import lombok.AllArgsConstructor;
 import one.digitalinnovation.peoplemanagementapi.dto.MessageResponseDTO;
 import one.digitalinnovation.peoplemanagementapi.dto.PersonDTO;
 import one.digitalinnovation.peoplemanagementapi.exception.PersonNotFoundException;
@@ -8,23 +9,16 @@ import one.digitalinnovation.peoplemanagementapi.model.Person;
 import one.digitalinnovation.peoplemanagementapi.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class PersonService {
 
     private PersonRepository personRepository;
-
     private final PersonMapper  personMapper = PersonMapper.INSTANCE;
-
-    @Autowired
-    public PersonService(PersonRepository personRepository) {
-        this.personRepository = personRepository;
-    }
 
     public List<PersonDTO> listAll() {
         List<Person> allPeople = personRepository.findAll();
@@ -32,7 +26,6 @@ public class PersonService {
                 .map(personMapper::toDto)
                 .collect(Collectors.toList());
     }
-
 
     public MessageResponseDTO createPerson(PersonDTO personDTO) {
         Person personToSave = personMapper.toModel(personDTO);
